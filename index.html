@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Management System – P-C-A | Ganit</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@600;700;800&display=swap');
+
+  :root {
+    --navy: #0A1F44;
+    --orange: #F7941D;
+    --orange-light: #FFF4E5;
+    --navy-light: #EEF1F7;
+    --white: #FFFFFF;
+    --text: #1A2B4A;
+    --muted: #6B7A99;
+    --success: #1DAA6A;
+    --success-bg: #E8F8F1;
+    --error: #E03030;
+    --error-bg: #FEECEC;
+    --border: #DDE2EF;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #F4F6FB;
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--navy);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(10,31,68,0.18);
+  }
+  .header-logo {
+    font-family: 'Sora', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+  .header-logo span { color: var(--orange); }
+  .header-tag {
+    margin-left: auto;
+    background: rgba(247,148,29,0.18);
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 20px;
+  }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .progress-label { font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; }
+  .progress-bar { flex: 1; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--orange), #FFB347); border-radius: 99px; transition: width 0.5s ease; }
+  .progress-pct { font-size: 12px; font-weight: 700; color: var(--navy); white-space: nowrap; }
+
+  /* ── Layout ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 36px 20px 60px; }
+
+  /* ── Screen ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── Welcome / Intro ── */
+  .hero-card {
+    background: linear-gradient(135deg, var(--navy) 0%, #162B5E 100%);
+    border-radius: 20px;
+    padding: 52px 48px;
+    color: var(--white);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    background: rgba(247,148,29,0.1);
+    border-radius: 50%;
+    top: -80px; right: -60px;
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    background: rgba(247,148,29,0.2);
+    color: var(--orange);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero-title { font-family: 'Sora', sans-serif; font-size: 34px; font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+  .hero-title span { color: var(--orange); }
+  .hero-sub { font-size: 15px; color: rgba(255,255,255,0.72); line-height: 1.7; max-width: 520px; margin: 0 auto 36px; }
+
+  .pillars-row { display: flex; gap: 16px; justify-content: center; margin-bottom: 40px; flex-wrap: wrap; }
+  .pillar-badge {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 14px 20px;
+    min-width: 160px;
+    text-align: left;
+  }
+  .pillar-badge .icon { font-size: 22px; margin-bottom: 8px; }
+  .pillar-badge .ptitle { font-size: 12px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1px; }
+  .pillar-badge .pdesc { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 4px; line-height: 1.4; }
+
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-primary:hover { background: #e0870f; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(247,148,29,0.35); }
+
+  /* ── Lesson Cards ── */
+  .module-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .module-num {
+    width: 48px; height: 48px;
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Sora', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .module-meta .label { font-size: 11px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 1.5px; }
+  .module-meta h2 { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 700; color: var(--navy); margin-top: 2px; }
+
+  .lesson-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    margin-bottom: 20px;
+  }
+  .lesson-card h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--orange-light);
+  }
+  .lesson-card p { font-size: 14px; line-height: 1.75; color: #3A4B6A; margin-bottom: 10px; }
+  .lesson-card p:last-child { margin-bottom: 0; }
+
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .info-box {
+    background: var(--navy-light);
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-left: 4px solid var(--navy);
+  }
+  .info-box.orange { background: var(--orange-light); border-left-color: var(--orange); }
+  .info-box .box-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin-bottom: 6px; }
+  .info-box .box-val { font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.5; }
+
+  .kpi-list { list-style: none; margin-top: 12px; }
+  .kpi-list li {
+    font-size: 13px;
+    color: #3A4B6A;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .kpi-list li:last-child { border-bottom: none; }
+  .kpi-list li::before { content: '›'; color: var(--orange); font-weight: 800; font-size: 16px; flex-shrink: 0; }
+
+  .score-flow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .score-chip {
+    background: var(--navy);
+    color: var(--white);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .score-chip .num { font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 800; color: var(--orange); display: block; }
+  .arrow { color: var(--muted); font-size: 20px; font-weight: 700; }
+  .score-chip.highlight { background: var(--orange); }
+  .score-chip.highlight .num { color: var(--white); }
+
+  .perf-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .cat-badge {
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .cat-badge.red { background: #FEECEC; color: #9B1C1C; border-left: 3px solid #E03030; }
+  .cat-badge.yellow { background: #FFFBEA; color: #7B6800; border-left: 3px solid #F5BE00; }
+  .cat-badge.green { background: #E8F8F1; color: #0E6244; border-left: 3px solid #1DAA6A; }
+  .cat-badge.blue { background: #EEF4FF; color: #1A3A8F; border-left: 3px solid #4A7FFF; }
+
+  .highlight-box {
+    background: var(--orange-light);
+    border: 1px solid #FFD8A0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .highlight-box .icon { font-size: 20px; flex-shrink: 0; }
+  .highlight-box p { font-size: 13px; color: #6B3F00; line-height: 1.6; }
+  .highlight-box strong { color: #4A2800; }
+
+  /* ── Navigation buttons ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    gap: 12px;
+  }
+  .btn-nav {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-back { background: var(--white); color: var(--navy); border: 1.5px solid var(--border); }
+  .btn-back:hover { border-color: var(--navy); }
+  .btn-next { background: var(--navy); color: var(--white); }
+  .btn-next:hover { background: #0d2855; transform: translateY(-1px); }
+  .btn-quiz { background: var(--orange); color: var(--white); }
+  .btn-quiz:hover { background: #e0870f; }
+
+  /* ── Quiz ── */
+  .quiz-header {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 22px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .quiz-icon { font-size: 32px; }
+  .quiz-header h2 { font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+  .quiz-header p { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .q-counter { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--navy); background: var(--navy-light); padding: 6px 14px; border-radius: 20px; white-space: nowrap; }
+
+  .q-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 30px 32px;
+    margin-bottom: 20px;
+  }
+  .q-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--orange); margin-bottom: 10px; }
+  .q-text { font-size: 16px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 22px; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text);
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--white);
+    text-align: left;
+    width: 100%;
+  }
+  .option:hover:not(:disabled) { border-color: var(--navy); background: var(--navy-light); }
+  .option.selected { border-color: var(--navy); background: var(--navy-light); }
+  .option.correct { border-color: var(--success); background: var(--success-bg); color: #0C5A36; }
+  .option.incorrect { border-color: var(--error); background: var(--error-bg); color: #7B1010; }
+  .option.show-correct { border-color: var(--success); background: var(--success-bg); color: #0C5A36; }
+  .option:disabled { cursor: default; }
+  .opt-letter {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--border);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .option.correct .opt-letter { background: var(--success); color: white; }
+  .option.incorrect .opt-letter { background: var(--error); color: white; }
+  .option.show-correct .opt-letter { background: var(--success); color: white; }
+
+  .feedback-box {
+    margin-top: 16px;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 13px;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct { background: var(--success-bg); color: #0C5A36; border: 1px solid #A7E5C8; }
+  .feedback-box.incorrect { background: var(--error-bg); color: #7B1010; border: 1px solid #F5C0C0; }
+  .feedback-box strong { font-weight: 700; }
+
+  /* ── Result ── */
+  .result-card {
+    background: var(--white);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    padding: 52px 40px;
+    text-align: center;
+  }
+  .result-emoji { font-size: 64px; margin-bottom: 20px; }
+  .result-score { font-family: 'Sora', sans-serif; font-size: 52px; font-weight: 800; color: var(--navy); }
+  .result-score span { color: var(--orange); }
+  .result-label { font-size: 22px; font-weight: 700; color: var(--navy); margin: 8px 0 12px; }
+  .result-msg { font-size: 14px; color: var(--muted); max-width: 440px; margin: 0 auto 36px; line-height: 1.7; }
+
+  .result-breakdown {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .breakdown-item {
+    background: var(--navy-light);
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+  }
+  .breakdown-item .val { font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800; color: var(--navy); }
+  .breakdown-item .val.g { color: var(--success); }
+  .breakdown-item .val.r { color: var(--error); }
+  .breakdown-item .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  .result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-outline { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; background: var(--white); color: var(--navy); border: 1.5px solid var(--border); transition: all 0.2s; }
+  .btn-outline:hover { border-color: var(--navy); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">Ga<span>nit</span></div>
+  <div class="header-tag">HR Learning</div>
+</div>
+
+<div class="progress-wrap">
+  <span class="progress-label">Progress</span>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-pct" id="progressPct">0%</span>
+</div>
+
+<div class="container">
+
+  <!-- ══ SCREEN 0: WELCOME ══ -->
+  <div class="screen active" id="screen-0">
+    <div class="hero-card">
+      <div class="hero-eyebrow">People & Culture · Policy Training</div>
+      <h1 class="hero-title">Performance Management<br><span>P · C · A Framework</span></h1>
+      <p class="hero-sub">Understand how Ganit's unique appraisal system works — your goals, scoring, pay, and growth — all in one short module.</p>
+      <div class="pillars-row">
+        <div class="pillar-badge">
+          <div class="icon">🔥</div>
+          <div class="ptitle">Passion</div>
+          <div class="pdesc">Customer Delight</div>
+        </div>
+        <div class="pillar-badge">
+          <div class="icon">🏗️</div>
+          <div class="ptitle">Contribution</div>
+          <div class="pdesc">Building Ganit</div>
+        </div>
+        <div class="pillar-badge">
+          <div class="icon">🌱</div>
+          <div class="ptitle">Attitude</div>
+          <div class="pdesc">Self & Team Growth</div>
+        </div>
+      </div>
+      <button class="btn-primary" onclick="goTo(1)">Start Learning →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 1: MODULE 1 ══ -->
+  <div class="screen" id="screen-1">
+    <div class="module-header">
+      <div class="module-num">1</div>
+      <div class="module-meta">
+        <div class="label">Module 1 of 4</div>
+        <h2>What is P-C-A?</h2>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3>Ganit's Unique Appraisal Philosophy</h3>
+      <p>Ganit follows a differentiated performance appraisal model called <strong>P-C-A</strong>. Unlike standard rating systems, P-C-A evaluates you across three dimensions that reflect both your individual output and your impact on the organisation.</p>
+      <div class="pillars-row" style="margin-top:16px; margin-bottom:0; justify-content:flex-start;">
+        <div class="pillar-badge" style="background:var(--navy-light); border:1px solid var(--border); min-width:140px;">
+          <div class="icon">🔥</div>
+          <div class="ptitle" style="color:var(--navy);">Passion</div>
+          <div class="pdesc" style="color:var(--muted);">Toward customer delight</div>
+        </div>
+        <div class="pillar-badge" style="background:var(--navy-light); border:1px solid var(--border); min-width:140px;">
+          <div class="icon">🏗️</div>
+          <div class="ptitle" style="color:var(--navy);">Contribution</div>
+          <div class="pdesc" style="color:var(--muted);">Toward building Ganit</div>
+        </div>
+        <div class="pillar-badge" style="background:var(--navy-light); border:1px solid var(--border); min-width:140px;">
+          <div class="icon">🌱</div>
+          <div class="ptitle" style="color:var(--navy);">Attitude</div>
+          <div class="pdesc" style="color:var(--muted);">Self & team development</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3>The Annual Cycle</h3>
+      <p>The performance cycle runs from <strong>January to December</strong> each calendar year. Key events:</p>
+      <ul class="kpi-list">
+        <li>Goals are set at the <strong>start of the year</strong> through discussion with your manager</li>
+        <li>A <strong>quarterly review process</strong> is followed for goal-setting, reviews, and scores</li>
+        <li>Increment and variable pay are paid during <strong>Q1 of the following year</strong></li>
+        <li>Promotions are determined by performance, special projects, and role availability</li>
+      </ul>
+      <div class="info-grid">
+        <div class="info-box">
+          <div class="box-label">Eligibility Cut-off</div>
+          <div class="box-val">Joined on or before <strong>30 September</strong> of the calendar year</div>
+        </div>
+        <div class="info-box orange">
+          <div class="box-label">Late Joiners (Post Oct 1)</div>
+          <div class="box-val">Increment & variable considered in the <strong>following year's appraisal</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-nav btn-back" onclick="goTo(0)">← Back</button>
+      <button class="btn-nav btn-next" onclick="goTo(2)">Next: Goal Setting →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 2: MODULE 2 ══ -->
+  <div class="screen" id="screen-2">
+    <div class="module-header">
+      <div class="module-num">2</div>
+      <div class="module-meta">
+        <div class="label">Module 2 of 4</div>
+        <h2>Goal Setting & KPIs</h2>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3>🔥 Passion – KPIs for Customer Delight</h3>
+      <p>Your manager will discuss and agree on measurable KPIs that reflect how you contribute to customer satisfaction.</p>
+      <ul class="kpi-list">
+        <li>Number of appreciation emails or mentions received from the customer</li>
+        <li>Extension of projects — a sign the customer values your work</li>
+        <li>Quality and timeliness of deliverables that directly impact the customer</li>
+      </ul>
+    </div>
+
+    <div class="lesson-card">
+      <h3>🏗️ Contribution – Building Ganit's Brand</h3>
+      <p>This pillar measures how actively you build and represent Ganit beyond your daily project work.</p>
+      <ul class="kpi-list">
+        <li>Number of articles published on Ganit's LinkedIn, Blog, or Website</li>
+        <li>Participating in conferences or industry events</li>
+        <li>Introducing new prospects or business leads to Ganit</li>
+        <li>Number of hiring referrals made</li>
+      </ul>
+    </div>
+
+    <div class="lesson-card">
+      <h3>🌱 Attitude – Self & Team Development</h3>
+      <p>Attitude measures personal growth, team enablement, and your commitment to Ganit's culture.</p>
+      <ul class="kpi-list">
+        <li>Number of new certifications obtained</li>
+        <li>Number of learning sessions conducted for your team</li>
+        <li>Efforts put in to build Ganit internally</li>
+        <li>Commitment and aspiration — being a role model to others</li>
+        <li>Personal drive to develop leadership and technical skills</li>
+        <li>Domain expertise — e.g., peers should say <em>"She/he is the Python go-to person"</em></li>
+      </ul>
+      <div class="highlight-box">
+        <div class="icon">💡</div>
+        <p><strong>Important:</strong> Goals can be updated every quarter based on project requirements and discussions with your manager. You <strong>own your PCA</strong> — no one else. Ensure timely completion.</p>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-nav btn-back" onclick="goTo(1)">← Back</button>
+      <button class="btn-nav btn-next" onclick="goTo(3)">Next: Scoring & Pay →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 3: MODULE 3 ══ -->
+  <div class="screen" id="screen-3">
+    <div class="module-header">
+      <div class="module-num">3</div>
+      <div class="module-meta">
+        <div class="label">Module 3 of 4</div>
+        <h2>Scoring & Variable Pay</h2>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3>How Your Score Is Calculated</h3>
+      <p>Each quarter, your score is calculated from a combination of <strong>self-rating</strong> and <strong>manager rating</strong>, weighted based on priorities. The quarterly score is out of 5.</p>
+      <div class="score-flow">
+        <div class="score-chip">
+          <span class="num">Q1</span>
+          Score /5
+        </div>
+        <div class="arrow">+</div>
+        <div class="score-chip">
+          <span class="num">Q2</span>
+          Score /5
+        </div>
+        <div class="arrow">+</div>
+        <div class="score-chip">
+          <span class="num">Q3</span>
+          Score /5
+        </div>
+        <div class="arrow">+</div>
+        <div class="score-chip">
+          <span class="num">Q4</span>
+          Score /5
+        </div>
+        <div class="arrow">=</div>
+        <div class="score-chip">
+          <span class="num">/20</span>
+          Annual Score
+        </div>
+        <div class="arrow">+</div>
+        <div class="score-chip highlight">
+          <span class="num">+5</span>
+          Leadership
+        </div>
+      </div>
+      <div class="info-grid">
+        <div class="info-box">
+          <div class="box-label">Annual Self + Manager Score</div>
+          <div class="box-val">Out of <strong>20</strong> (4 quarters × 5 each)</div>
+        </div>
+        <div class="info-box orange">
+          <div class="box-label">Leadership Score (Org / Team / Account)</div>
+          <div class="box-val">Additional <strong>5 points</strong> → Final score is <strong>out of 25</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3>Performance Categories</h3>
+      <p>At the end of the year, your overall rating falls into one of four categories:</p>
+      <div class="perf-cats">
+        <div class="cat-badge red">🔴 <strong>Needs Improvement</strong><br><span style="font-weight:400; font-size:11px;">Performance consistently below expectations</span></div>
+        <div class="cat-badge yellow">🟡 <strong>Developing Performer</strong><br><span style="font-weight:400; font-size:11px;">Below expectations but showing improvement</span></div>
+        <div class="cat-badge green">🟢 <strong>Successful Performer</strong><br><span style="font-weight:400; font-size:11px;">Performance consistently meets expectations</span></div>
+        <div class="cat-badge blue">🔵 <strong>Outstanding Performer</strong><br><span style="font-weight:400; font-size:11px;">Performance exceeds expectations</span></div>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3>How Scores Affect Rewards</h3>
+      <ul class="kpi-list">
+        <li><strong>Variable Pay:</strong> Depends on your individual score, company performance, and market conditions. No minimum guaranteed payout</li>
+        <li><strong>Fixed Pay Rise:</strong> Based on feedback, rating, company performance, and market conditions. Increments are not fixed</li>
+        <li><strong>Promotion & Re-designation:</strong> Based on performance in your current role, minimum 1 year tenure, stretch roles, cross-skilling, and role availability</li>
+        <li><strong>Payout Timing:</strong> Paid during February effective December, once the Annual Review Process (APR) is completed</li>
+      </ul>
+      <div class="highlight-box">
+        <div class="icon">⚠️</div>
+        <p><strong>Critical:</strong> If you do not have a PCA score, your <strong>Variable Pay becomes zero</strong>. Completing all quarterly reviews and assessments is mandatory and your own responsibility.</p>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-nav btn-back" onclick="goTo(2)">← Back</button>
+      <button class="btn-nav btn-next" onclick="goTo(4)">Next: Roles & Responsibilities →</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 4: MODULE 4 ══ -->
+  <div class="screen" id="screen-4">
+    <div class="module-header">
+      <div class="module-num">4</div>
+      <div class="module-meta">
+        <div class="label">Module 4 of 4</div>
+        <h2>Roles, Promotions & Responsibilities</h2>
+      </div>
+    </div>
+
+    <div class="lesson-card">
+      <h3>Employee Responsibilities</h3>
+      <p>You own the entire APR (Annual Performance Review) process. This includes:</p>
+      <ul class="kpi-list">
+        <li>Setting your goals in consultation with your manager at the start of the year</li>
+        <li>Completing self-assessments every quarter — on time</li>
+        <li>Ensuring quarterly reviews are conducted and not missed</li>
+        <li>Engaging in meaningful discussions with your manager about performance</li>
+        <li>Updating goals every quarter if project or role requirements change</li>
+      </ul>
+    </div>
+
+    <div class="lesson-card">
+      <h3>Manager Responsibilities</h3>
+      <ul class="kpi-list">
+        <li>Setting clear, measurable, and agreed-upon goals with each team member</li>
+        <li>Providing regular, constructive feedback throughout the year</li>
+        <li>Conducting quarterly evaluations promptly and fairly</li>
+        <li>Supporting employee development and growth aspirations</li>
+      </ul>
+    </div>
+
+    <div class="lesson-card">
+      <h3>What It Takes to Get Promoted</h3>
+      <p>Promotions at Ganit are merit-based and multi-dimensional. Tenure alone does not guarantee promotion. The key criteria:</p>
+      <div class="info-grid">
+        <div class="info-box">
+          <div class="box-label">Performance</div>
+          <div class="box-val">Strong ratings in your current role over a sustained period</div>
+        </div>
+        <div class="info-box">
+          <div class="box-label">Tenure</div>
+          <div class="box-val">Minimum <strong>1 year</strong> in current role required</div>
+        </div>
+        <div class="info-box">
+          <div class="box-label">Stretch Roles</div>
+          <div class="box-val">Successfully taking on responsibilities beyond your current level</div>
+        </div>
+        <div class="info-box orange">
+          <div class="box-label">Role Availability</div>
+          <div class="box-val">Open positions must exist; promotions also depend on company needs</div>
+        </div>
+      </div>
+      <div class="highlight-box" style="margin-top:16px;">
+        <div class="icon">🌟</div>
+        <p>Also evaluated: <strong>cross-skilling, cultural alignment, demonstrating next-level competencies,</strong> and involvement in <strong>special projects</strong>.</p>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-nav btn-back" onclick="goTo(3)">← Back</button>
+      <button class="btn-nav btn-quiz" onclick="startQuiz()">Take the Quiz 🎯</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 5: QUIZ ══ -->
+  <div class="screen" id="screen-5">
+    <div class="quiz-header">
+      <div class="quiz-icon">🎯</div>
+      <div>
+        <h2>Knowledge Check</h2>
+        <p>Test what you've learned about Ganit's P-C-A Performance Management</p>
+      </div>
+      <div class="q-counter" id="qCounter">Q 1 / 10</div>
+    </div>
+    <div id="quizContent"></div>
+  </div>
+
+  <!-- ══ SCREEN 6: RESULT ══ -->
+  <div class="screen" id="screen-6">
+    <div class="result-card">
+      <div class="result-emoji" id="resultEmoji">🏆</div>
+      <div class="result-score" id="resultScore">0<span>/10</span></div>
+      <div class="result-label" id="resultLabel">Well Done!</div>
+      <p class="result-msg" id="resultMsg"></p>
+      <div class="result-breakdown">
+        <div class="breakdown-item">
+          <div class="val g" id="correctCount">0</div>
+          <div class="lbl">Correct</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="val r" id="incorrectCount">0</div>
+          <div class="lbl">Incorrect</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="val" id="pctScore">0%</div>
+          <div class="lbl">Score</div>
+        </div>
+      </div>
+      <div class="result-actions">
+        <button class="btn-outline" onclick="restartQuiz()">Retake Quiz</button>
+        <button class="btn-primary" onclick="goTo(0)">Back to Start</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const totalScreens = 7;
+  const QUIZ_SCREEN = 5;
+  const RESULT_SCREEN = 6;
+
+  function goTo(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + n).classList.add('active');
+    updateProgress(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function updateProgress(screen) {
+    const pct = Math.round((screen / 6) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+  }
+
+  // ──────────── QUIZ DATA ────────────
+  const questions = [
+    {
+      q: "What does P-C-A stand for in Ganit's appraisal system?",
+      opts: [
+        "Performance – Competency – Achievement",
+        "Passion – Contribution – Attitude",
+        "Potential – Consistency – Adaptability",
+        "Productivity – Collaboration – Accountability"
+      ],
+      ans: 1,
+      explain: "P-C-A stands for Passion (toward customer delight), Contribution (toward building Ganit), and Attitude (toward self and team development)."
+    },
+    {
+      q: "When does Ganit's performance appraisal cycle run?",
+      opts: [
+        "April to March (fiscal year)",
+        "July to June",
+        "January to December (calendar year)",
+        "October to September"
+      ],
+      ans: 2,
+      explain: "Ganit follows a calendar year cycle — January to December."
+    },
+    {
+      q: "An employee joins Ganit on 5th October. When will their increment and variable payout be considered?",
+      opts: [
+        "During the same year's appraisal in Q4",
+        "Immediately after their first quarter",
+        "During the following year's appraisal",
+        "They are not eligible for any increment"
+      ],
+      ans: 2,
+      explain: "Employees who join after 1st October have their increment and variable payout considered during the following year's appraisal."
+    },
+    {
+      q: "What is the maximum final score an employee can achieve in the PMS?",
+      opts: [
+        "20 (4 quarters × 5)",
+        "25 (20 self+manager + 5 leadership)",
+        "30 (including bonus points)",
+        "10 (average of 4 quarters)"
+      ],
+      ans: 1,
+      explain: "The annual self + manager score is out of 20. An additional 5 points are assigned by leadership (Org/team/account performance), making the final score out of 25."
+    },
+    {
+      q: "What happens to an employee's variable pay if they do not complete their PCA reviews?",
+      opts: [
+        "Variable pay is reduced by 50%",
+        "Variable pay is carried forward to the next year",
+        "Variable pay becomes zero",
+        "The manager assigns a default score"
+      ],
+      ans: 2,
+      explain: "If an employee does not have a PCA score, their Variable Pay becomes zero. Completion is mandatory and the employee's own responsibility."
+    },
+    {
+      q: "Which of the following is an example of a 'Contribution toward building Ganit' KPI?",
+      opts: [
+        "Number of certifications obtained",
+        "Appreciation emails received from a customer",
+        "Publishing articles on Ganit's LinkedIn or blog",
+        "Number of learning sessions conducted for the team"
+      ],
+      ans: 2,
+      explain: "Publishing articles on Ganit's LinkedIn/Blog/Website falls under the 'Contribution' pillar. Certifications and learning sessions are under 'Attitude', and customer appreciation falls under 'Passion'."
+    },
+    {
+      q: "Which performance category describes an employee whose performance consistently meets expectations?",
+      opts: [
+        "Developing Performer",
+        "Needs Improvement",
+        "Outstanding Performer",
+        "Successful Performer"
+      ],
+      ans: 3,
+      explain: "A 'Successful Performer' is someone whose performance consistently meets expectations. Outstanding Performer exceeds expectations."
+    },
+    {
+      q: "What is the minimum tenure required in a current role before an employee becomes eligible for promotion consideration?",
+      opts: [
+        "6 months",
+        "1 year",
+        "2 years",
+        "18 months"
+      ],
+      ans: 1,
+      explain: "A minimum of 1 year in the current role is required for promotion eligibility. Additionally, role availability, performance, and stretch roles are also factors."
+    },
+    {
+      q: "Who is primarily responsible for ensuring that quarterly reviews are completed on time?",
+      opts: [
+        "The HR team",
+        "The reporting manager alone",
+        "The employee themselves",
+        "The department head"
+      ],
+      ans: 2,
+      explain: "Employees own the entire APR process. They are responsible for ensuring goals are set, self-assessments are completed, and quarterly reviews are conducted."
+    },
+    {
+      q: "When are the increment and variable pay disbursed after the appraisal cycle ends in December?",
+      opts: [
+        "January of the following year",
+        "April of the following year",
+        "February of the following year (effective December)",
+        "March, subject to board approval"
+      ],
+      ans: 2,
+      explain: "Increment and variable pay are disbursed during February (effective December) once the Annual Review Process (APR) is completed."
+    }
+  ];
+
+  let currentQ = 0;
+  let score = 0;
+  let answered = [];
+
+  function startQuiz() {
+    currentQ = 0;
+    score = 0;
+    answered = [];
+    goTo(5);
+    renderQuestion();
+  }
+
+  function renderQuestion() {
+    const q = questions[currentQ];
+    document.getElementById('qCounter').textContent = `Q ${currentQ + 1} / ${questions.length}`;
+
+    const letters = ['A', 'B', 'C', 'D'];
+    let html = `
+      <div class="q-card">
+        <div class="q-num">Question ${currentQ + 1} of ${questions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="options" id="optionsWrap">
+    `;
+    q.opts.forEach((opt, i) => {
+      html += `<button class="option" id="opt-${i}" onclick="selectAnswer(${i})">
+        <div class="opt-letter">${letters[i]}</div>${opt}
+      </button>`;
+    });
+    html += `</div>
+        <div class="feedback-box" id="feedbackBox"></div>
+      </div>
+      <div class="nav-row" style="justify-content:flex-end;" id="qNavRow">
+        <button class="btn-nav btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none;">
+          ${currentQ < questions.length - 1 ? 'Next Question →' : 'View Results 🎯'}
+        </button>
+      </div>`;
+
+    document.getElementById('quizContent').innerHTML = html;
+
+    const pct = Math.round(((5 + (currentQ / questions.length)) / 6) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+  }
+
+  function selectAnswer(idx) {
+    const q = questions[currentQ];
+    const opts = document.querySelectorAll('.option');
+    const fb = document.getElementById('feedbackBox');
+
+    opts.forEach(o => o.disabled = true);
+
+    if (idx === q.ans) {
+      opts[idx].classList.add('correct');
+      fb.className = 'feedback-box show correct';
+      fb.innerHTML = `<strong>✅ Correct!</strong> ${q.explain}`;
+      score++;
+      answered.push(true);
+    } else {
+      opts[idx].classList.add('incorrect');
+      opts[q.ans].classList.add('show-correct');
+      fb.className = 'feedback-box show incorrect';
+      fb.innerHTML = `<strong>❌ Not quite.</strong> ${q.explain}`;
+      answered.push(false);
+    }
+
+    document.getElementById('nextBtn').style.display = 'flex';
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
+  function nextQuestion() {
+    currentQ++;
+    if (currentQ < questions.length) {
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      showResult();
+    }
+  }
+
+  function showResult() {
+    const pct = Math.round((score / questions.length) * 100);
+    let emoji, label, msg;
+
+    if (pct >= 90) {
+      emoji = '🏆'; label = 'Outstanding!';
+      msg = 'Excellent work! You have a thorough understanding of Ganit\'s PMS framework. You are well-prepared to own your appraisal process.';
+    } else if (pct >= 70) {
+      emoji = '🌟'; label = 'Well Done!';
+      msg = 'Good understanding! Review the sections where you missed to sharpen your knowledge. You are on the right track.';
+    } else if (pct >= 50) {
+      emoji = '📚'; label = 'Keep Learning';
+      msg = 'You have a basic grasp. We recommend revisiting the modules — especially Scoring & Pay and Roles & Responsibilities.';
+    } else {
+      emoji = '🔄'; label = 'Give It Another Go';
+      msg = 'Take a moment to re-read the modules, then retake the quiz. Understanding P-C-A is important for your performance journey.';
+    }
+
+    document.getElementById('resultEmoji').textContent = emoji;
+    document.getElementById('resultScore').innerHTML = `${score}<span>/${questions.length}</span>`;
+    document.getElementById('resultLabel').textContent = label;
+    document.getElementById('resultMsg').textContent = msg;
+    document.getElementById('correctCount').textContent = score;
+    document.getElementById('incorrectCount').textContent = questions.length - score;
+    document.getElementById('pctScore').textContent = pct + '%';
+
+    goTo(6);
+  }
+
+  function restartQuiz() {
+    startQuiz();
+  }
+</script>
+</body>
+</html>
