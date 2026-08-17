@@ -34,34 +34,34 @@
 
   /* ── Header ── */
   .header {
-    background: var(--navy);
-    padding: 18px 32px;
+    background: var(--white);
+    padding: 8px 32px;
     display: flex;
     align-items: center;
-    gap: 16px;
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 12px rgba(10,31,68,0.18);
+    box-shadow: 0 2px 12px rgba(10,31,68,0.12);
+    min-height: 60px;
   }
-  .header-logo {
-    font-family: 'Sora', sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--white);
-    letter-spacing: -0.5px;
+  .header-brand-image {
+    display: block;
+    width: auto;
+    height: 40px;
+    max-width: 230px;
+    object-fit: contain;
   }
-  .header-logo span { color: var(--orange); }
   .header-tag {
     margin-left: auto;
-    background: rgba(247,148,29,0.18);
-    color: var(--orange);
+    background: var(--orange);
+    color: var(--white);
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    padding: 5px 12px;
+    padding: 6px 14px;
     border-radius: 20px;
+    white-space: nowrap;
   }
 
   /* ── Progress bar ── */
@@ -288,124 +288,12 @@
   .btn-next:hover { background: #0d2855; transform: translateY(-1px); }
   .btn-quiz { background: var(--orange); color: var(--white); }
   .btn-quiz:hover { background: #e0870f; }
-
-  /* ── Quiz ── */
-  .quiz-header {
-    background: var(--white);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 22px 28px;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .quiz-icon { font-size: 32px; }
-  .quiz-header h2 { font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 700; color: var(--navy); }
-  .quiz-header p { font-size: 13px; color: var(--muted); margin-top: 3px; }
-  .q-counter { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--navy); background: var(--navy-light); padding: 6px 14px; border-radius: 20px; white-space: nowrap; }
-
-  .q-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 30px 32px;
-    margin-bottom: 20px;
-  }
-  .q-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--orange); margin-bottom: 10px; }
-  .q-text { font-size: 16px; font-weight: 600; color: var(--navy); line-height: 1.5; margin-bottom: 22px; }
-
-  .options { display: flex; flex-direction: column; gap: 10px; }
-  .option {
-    border: 1.5px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 18px;
-    cursor: pointer;
-    font-size: 14px;
-    color: var(--text);
-    transition: all 0.18s;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--white);
-    text-align: left;
-    width: 100%;
-  }
-  .option:hover:not(:disabled) { border-color: var(--navy); background: var(--navy-light); }
-  .option.selected { border-color: var(--navy); background: var(--navy-light); }
-  .option.correct { border-color: var(--success); background: var(--success-bg); color: #0C5A36; }
-  .option.incorrect { border-color: var(--error); background: var(--error-bg); color: #7B1010; }
-  .option.show-correct { border-color: var(--success); background: var(--success-bg); color: #0C5A36; }
-  .option:disabled { cursor: default; }
-  .opt-letter {
-    width: 28px; height: 28px;
-    border-radius: 6px;
-    background: var(--border);
-    font-size: 12px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .option.correct .opt-letter { background: var(--success); color: white; }
-  .option.incorrect .opt-letter { background: var(--error); color: white; }
-  .option.show-correct .opt-letter { background: var(--success); color: white; }
-
-  .feedback-box {
-    margin-top: 16px;
-    border-radius: 10px;
-    padding: 14px 18px;
-    font-size: 13px;
-    line-height: 1.6;
-    display: none;
-  }
-  .feedback-box.show { display: block; }
-  .feedback-box.correct { background: var(--success-bg); color: #0C5A36; border: 1px solid #A7E5C8; }
-  .feedback-box.incorrect { background: var(--error-bg); color: #7B1010; border: 1px solid #F5C0C0; }
-  .feedback-box strong { font-weight: 700; }
-
-  /* ── Result ── */
-  .result-card {
-    background: var(--white);
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    padding: 52px 40px;
-    text-align: center;
-  }
-  .result-emoji { font-size: 64px; margin-bottom: 20px; }
-  .result-score { font-family: 'Sora', sans-serif; font-size: 52px; font-weight: 800; color: var(--navy); }
-  .result-score span { color: var(--orange); }
-  .result-label { font-size: 22px; font-weight: 700; color: var(--navy); margin: 8px 0 12px; }
-  .result-msg { font-size: 14px; color: var(--muted); max-width: 440px; margin: 0 auto 36px; line-height: 1.7; }
-
-  .result-breakdown {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 36px;
-    flex-wrap: wrap;
-  }
-  .breakdown-item {
-    background: var(--navy-light);
-    border-radius: 12px;
-    padding: 16px 24px;
-    text-align: center;
-  }
-  .breakdown-item .val { font-family: 'Sora', sans-serif; font-size: 26px; font-weight: 800; color: var(--navy); }
-  .breakdown-item .val.g { color: var(--success); }
-  .breakdown-item .val.r { color: var(--error); }
-  .breakdown-item .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
-
-  .result-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-  .btn-outline { padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; background: var(--white); color: var(--navy); border: 1.5px solid var(--border); transition: all 0.2s; }
-  .btn-outline:hover { border-color: var(--navy); }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-logo">Ga<span>nit</span></div>
+  <img src="data:image/png;base64,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" alt="Ganit Logo" class="header-brand-image">
   <div class="header-tag">HR Learning</div>
 </div>
 
@@ -698,58 +586,15 @@
 
     <div class="nav-row">
       <button class="btn-nav btn-back" onclick="goTo(3)">← Back</button>
-      <button class="btn-nav btn-quiz" onclick="startQuiz()">Take the Quiz 🎯</button>
-    </div>
-  </div>
-
-  <!-- ══ SCREEN 5: QUIZ ══ -->
-  <div class="screen" id="screen-5">
-    <div class="quiz-header">
-      <div class="quiz-icon">🎯</div>
-      <div>
-        <h2>Knowledge Check</h2>
-        <p>Test what you've learned about Ganit's P-C-A Performance Management</p>
-      </div>
-      <div class="q-counter" id="qCounter">Q 1 / 10</div>
-    </div>
-    <div id="quizContent"></div>
-  </div>
-
-  <!-- ══ SCREEN 6: RESULT ══ -->
-  <div class="screen" id="screen-6">
-    <div class="result-card">
-      <div class="result-emoji" id="resultEmoji">🏆</div>
-      <div class="result-score" id="resultScore">0<span>/10</span></div>
-      <div class="result-label" id="resultLabel">Well Done!</div>
-      <p class="result-msg" id="resultMsg"></p>
-      <div class="result-breakdown">
-        <div class="breakdown-item">
-          <div class="val g" id="correctCount">0</div>
-          <div class="lbl">Correct</div>
-        </div>
-        <div class="breakdown-item">
-          <div class="val r" id="incorrectCount">0</div>
-          <div class="lbl">Incorrect</div>
-        </div>
-        <div class="breakdown-item">
-          <div class="val" id="pctScore">0%</div>
-          <div class="lbl">Score</div>
-        </div>
-      </div>
-      <div class="result-actions">
-        <button class="btn-outline" onclick="restartQuiz()">Retake Quiz</button>
-        <button class="btn-primary" onclick="goTo(0)">Back to Start</button>
-      </div>
+      <button class="btn-nav btn-quiz" onclick="window.location.href='https://forms.cloud.microsoft/r/c1mAxTxiip'">Take the Quiz 🎯</button>
     </div>
   </div>
 
 </div>
 
 <script>
-  const totalScreens = 7;
-  const QUIZ_SCREEN = 5;
-  const RESULT_SCREEN = 6;
-
+  const totalScreens = 5;
+  
   function goTo(n) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-' + n).classList.add('active');
@@ -758,235 +603,9 @@
   }
 
   function updateProgress(screen) {
-    const pct = Math.round((screen / 6) * 100);
+    const pct = Math.round((screen / 4) * 100);
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('progressPct').textContent = pct + '%';
-  }
-
-  // ──────────── QUIZ DATA ────────────
-  const questions = [
-    {
-      q: "What does P-C-A stand for in Ganit's appraisal system?",
-      opts: [
-        "Performance – Competency – Achievement",
-        "Passion – Contribution – Attitude",
-        "Potential – Consistency – Adaptability",
-        "Productivity – Collaboration – Accountability"
-      ],
-      ans: 1,
-      explain: "P-C-A stands for Passion (toward customer delight), Contribution (toward building Ganit), and Attitude (toward self and team development)."
-    },
-    {
-      q: "When does Ganit's performance appraisal cycle run?",
-      opts: [
-        "April to March (fiscal year)",
-        "July to June",
-        "January to December (calendar year)",
-        "October to September"
-      ],
-      ans: 2,
-      explain: "Ganit follows a calendar year cycle — January to December."
-    },
-    {
-      q: "An employee joins Ganit on 5th October. When will their increment and variable payout be considered?",
-      opts: [
-        "During the same year's appraisal in Q4",
-        "Immediately after their first quarter",
-        "During the following year's appraisal",
-        "They are not eligible for any increment"
-      ],
-      ans: 2,
-      explain: "Employees who join after 1st October have their increment and variable payout considered during the following year's appraisal."
-    },
-    {
-      q: "What is the maximum final score an employee can achieve in the PMS?",
-      opts: [
-        "20 (4 quarters × 5)",
-        "25 (20 self+manager + 5 leadership)",
-        "30 (including bonus points)",
-        "10 (average of 4 quarters)"
-      ],
-      ans: 1,
-      explain: "The annual self + manager score is out of 20. An additional 5 points are assigned by leadership (Org/team/account performance), making the final score out of 25."
-    },
-    {
-      q: "What happens to an employee's variable pay if they do not complete their PCA reviews?",
-      opts: [
-        "Variable pay is reduced by 50%",
-        "Variable pay is carried forward to the next year",
-        "Variable pay becomes zero",
-        "The manager assigns a default score"
-      ],
-      ans: 2,
-      explain: "If an employee does not have a PCA score, their Variable Pay becomes zero. Completion is mandatory and the employee's own responsibility."
-    },
-    {
-      q: "Which of the following is an example of a 'Contribution toward building Ganit' KPI?",
-      opts: [
-        "Number of certifications obtained",
-        "Appreciation emails received from a customer",
-        "Publishing articles on Ganit's LinkedIn or blog",
-        "Number of learning sessions conducted for the team"
-      ],
-      ans: 2,
-      explain: "Publishing articles on Ganit's LinkedIn/Blog/Website falls under the 'Contribution' pillar. Certifications and learning sessions are under 'Attitude', and customer appreciation falls under 'Passion'."
-    },
-    {
-      q: "Which performance category describes an employee whose performance consistently meets expectations?",
-      opts: [
-        "Developing Performer",
-        "Needs Improvement",
-        "Outstanding Performer",
-        "Successful Performer"
-      ],
-      ans: 3,
-      explain: "A 'Successful Performer' is someone whose performance consistently meets expectations. Outstanding Performer exceeds expectations."
-    },
-    {
-      q: "What is the minimum tenure required in a current role before an employee becomes eligible for promotion consideration?",
-      opts: [
-        "6 months",
-        "1 year",
-        "2 years",
-        "18 months"
-      ],
-      ans: 1,
-      explain: "A minimum of 1 year in the current role is required for promotion eligibility. Additionally, role availability, performance, and stretch roles are also factors."
-    },
-    {
-      q: "Who is primarily responsible for ensuring that quarterly reviews are completed on time?",
-      opts: [
-        "The HR team",
-        "The reporting manager alone",
-        "The employee themselves",
-        "The department head"
-      ],
-      ans: 2,
-      explain: "Employees own the entire APR process. They are responsible for ensuring goals are set, self-assessments are completed, and quarterly reviews are conducted."
-    },
-    {
-      q: "When are the increment and variable pay disbursed after the appraisal cycle ends in December?",
-      opts: [
-        "January of the following year",
-        "April of the following year",
-        "February of the following year (effective December)",
-        "March, subject to board approval"
-      ],
-      ans: 2,
-      explain: "Increment and variable pay are disbursed during February (effective December) once the Annual Review Process (APR) is completed."
-    }
-  ];
-
-  let currentQ = 0;
-  let score = 0;
-  let answered = [];
-
-  function startQuiz() {
-    currentQ = 0;
-    score = 0;
-    answered = [];
-    goTo(5);
-    renderQuestion();
-  }
-
-  function renderQuestion() {
-    const q = questions[currentQ];
-    document.getElementById('qCounter').textContent = `Q ${currentQ + 1} / ${questions.length}`;
-
-    const letters = ['A', 'B', 'C', 'D'];
-    let html = `
-      <div class="q-card">
-        <div class="q-num">Question ${currentQ + 1} of ${questions.length}</div>
-        <div class="q-text">${q.q}</div>
-        <div class="options" id="optionsWrap">
-    `;
-    q.opts.forEach((opt, i) => {
-      html += `<button class="option" id="opt-${i}" onclick="selectAnswer(${i})">
-        <div class="opt-letter">${letters[i]}</div>${opt}
-      </button>`;
-    });
-    html += `</div>
-        <div class="feedback-box" id="feedbackBox"></div>
-      </div>
-      <div class="nav-row" style="justify-content:flex-end;" id="qNavRow">
-        <button class="btn-nav btn-next" id="nextBtn" onclick="nextQuestion()" style="display:none;">
-          ${currentQ < questions.length - 1 ? 'Next Question →' : 'View Results 🎯'}
-        </button>
-      </div>`;
-
-    document.getElementById('quizContent').innerHTML = html;
-
-    const pct = Math.round(((5 + (currentQ / questions.length)) / 6) * 100);
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressPct').textContent = pct + '%';
-  }
-
-  function selectAnswer(idx) {
-    const q = questions[currentQ];
-    const opts = document.querySelectorAll('.option');
-    const fb = document.getElementById('feedbackBox');
-
-    opts.forEach(o => o.disabled = true);
-
-    if (idx === q.ans) {
-      opts[idx].classList.add('correct');
-      fb.className = 'feedback-box show correct';
-      fb.innerHTML = `<strong>✅ Correct!</strong> ${q.explain}`;
-      score++;
-      answered.push(true);
-    } else {
-      opts[idx].classList.add('incorrect');
-      opts[q.ans].classList.add('show-correct');
-      fb.className = 'feedback-box show incorrect';
-      fb.innerHTML = `<strong>❌ Not quite.</strong> ${q.explain}`;
-      answered.push(false);
-    }
-
-    document.getElementById('nextBtn').style.display = 'flex';
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }
-
-  function nextQuestion() {
-    currentQ++;
-    if (currentQ < questions.length) {
-      renderQuestion();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      showResult();
-    }
-  }
-
-  function showResult() {
-    const pct = Math.round((score / questions.length) * 100);
-    let emoji, label, msg;
-
-    if (pct >= 90) {
-      emoji = '🏆'; label = 'Outstanding!';
-      msg = 'Excellent work! You have a thorough understanding of Ganit\'s PMS framework. You are well-prepared to own your appraisal process.';
-    } else if (pct >= 70) {
-      emoji = '🌟'; label = 'Well Done!';
-      msg = 'Good understanding! Review the sections where you missed to sharpen your knowledge. You are on the right track.';
-    } else if (pct >= 50) {
-      emoji = '📚'; label = 'Keep Learning';
-      msg = 'You have a basic grasp. We recommend revisiting the modules — especially Scoring & Pay and Roles & Responsibilities.';
-    } else {
-      emoji = '🔄'; label = 'Give It Another Go';
-      msg = 'Take a moment to re-read the modules, then retake the quiz. Understanding P-C-A is important for your performance journey.';
-    }
-
-    document.getElementById('resultEmoji').textContent = emoji;
-    document.getElementById('resultScore').innerHTML = `${score}<span>/${questions.length}</span>`;
-    document.getElementById('resultLabel').textContent = label;
-    document.getElementById('resultMsg').textContent = msg;
-    document.getElementById('correctCount').textContent = score;
-    document.getElementById('incorrectCount').textContent = questions.length - score;
-    document.getElementById('pctScore').textContent = pct + '%';
-
-    goTo(6);
-  }
-
-  function restartQuiz() {
-    startQuiz();
   }
 </script>
 </body>
